@@ -1,6 +1,13 @@
-from django.urls import path
-from . import views
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import PerfilViewSet, CursoViewSet, DisciplinaViewSet
+
+router = DefaultRouter()
+router.register(r'perfis', PerfilViewSet)
+router.register(r'cursos', CursoViewSet)
+router.register(r'disciplinas', DisciplinaViewSet)
+
 
 urlpatterns = [
-    path("", views.index, name="index"),
+   path('', include(router.urls)),
 ]
