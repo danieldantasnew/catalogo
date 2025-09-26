@@ -20,10 +20,9 @@ class Perfil(AbstractUser):
     nome = models.CharField(max_length=100)
     tipo = models.CharField(choices=TIPOS)
     
-    username = None
     email = models.EmailField(unique=True)
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['username']
     ativo = models.BooleanField(default=True)
 
     groups = models.ManyToManyField(
