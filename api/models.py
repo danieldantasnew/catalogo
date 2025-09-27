@@ -21,8 +21,8 @@ class Perfil(AbstractUser):
     tipo = models.CharField(choices=TIPOS)
     
     email = models.EmailField(unique=True)
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['email']
     ativo = models.BooleanField(default=True)
 
     groups = models.ManyToManyField(
@@ -42,6 +42,9 @@ class Perfil(AbstractUser):
     )
 
     def save(self, *args, **kwargs):
+        if self.email:
+            self.username = self.email
+            
         if not self.codigo:
             ano = now().year
             ultimo_codigo = Perfil.objects.filter(codigo__startswith=f"MAT.{ano}.").order_by("id").last()

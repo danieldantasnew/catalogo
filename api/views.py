@@ -11,6 +11,8 @@ class IsGerente(BasePermission):
 
     def has_permission(self, request, view):
         user = request.user
+
+        print(getattr(user, 'tipo'))
         return bool(user and user.is_authenticated and getattr(user, 'tipo', '').lower() == 'gerente')
 
 
