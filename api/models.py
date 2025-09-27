@@ -47,11 +47,16 @@ class Perfil(AbstractUser):
             
         if not self.codigo:
             ano = now().year
-            ultimo_codigo = Perfil.objects.filter(codigo__startswith=f"MAT.{ano}.").order_by("id").last()
-            numero = 1 
-            if ultimo_codigo:
-               numero = int(ultimo_codigo.codigo.split(".")[-1]) + 1
+            codigos = Perfil.objects.filter(codigo__startswith=f"MAT.{ano}.").values_list('codigo', flat=True)
             
+            numeros = []
+            for cod in codigos:
+                try:
+                    numeros.append(int(cod.split('.')[-1]))
+                except:
+                    pass
+            
+            numero = 1 if not numeros else max(numeros) + 1
             self.codigo = f"MAT.{ano}.{numero}"
         
         super().save(*args, **kwargs)
