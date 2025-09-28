@@ -30,7 +30,11 @@ class CursoSerializer(serializers.ModelSerializer):
         fields = ['id','sigla','codigo','nome','descricao','ativo', 'carga_horaria_total']
 
 class DisciplinaSerializer(serializers.ModelSerializer):
+    curso = CursoSerializer(read_only=True)
+    curso_id = serializers.PrimaryKeyRelatedField(
+        queryset=Curso.objects.all(), write_only=True, source='curso'
+    )
+
     class Meta:
         model = Disciplina
-        fields = ['id','sigla','codigo','nome', 'ativo', 'curso', 'carga_horaria']
-        depth = 1
+        fields = ['id','sigla','codigo','nome','ativo','curso','curso_id','carga_horaria']
